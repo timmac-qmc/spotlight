@@ -1047,6 +1047,11 @@ function start(e){
     startX = touch.pageX;
     startY = touch.pageY;
 
+    // Add grabbing cursor for mouse events on desktop
+    if(!touches && media){
+        addClass(media, "grabbing");
+    }
+
     toggleAnimation(panel);
 }
 
@@ -1061,6 +1066,11 @@ function end(e){
     cancelEvent(e);
 
     prev_touches = null;
+
+    // Remove grabbing cursor
+    if(media){
+        removeClass(media, "grabbing");
+    }
 
     if(is_down){
 

@@ -1,5 +1,14 @@
-const { base64Sync } = require('base64-img');
 const { writeFileSync, readFileSync } = require('fs');
+
+// Secure replacement for base64-img
+function base64Sync(filepath) {
+    const data = readFileSync(filepath);
+    const base64 = data.toString('base64');
+    const ext = filepath.split('.').pop();
+    let mimeType = 'image/' + ext;
+    if (ext === 'svg') mimeType = 'image/svg+xml';
+    return 'data:' + mimeType + ';base64,' + base64;
+}
 
 const image = process.argv[2] === "--image";
 //const template = process.argv[2] === "--template";

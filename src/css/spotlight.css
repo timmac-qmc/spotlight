@@ -111,6 +111,11 @@
   contain: layout style;
   will-change: transform, opacity;
   visibility: hidden;
+  cursor: grab;
+}
+.spl-pane > *.grabbing {
+  cursor: grabbing;
+  transition: none;
 }
 .spl-pane {
   position: absolute;

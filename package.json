@@ -35,15 +35,15 @@
     "url": "https://github.com/nextapps-de/spotlight.git"
   },
   "scripts": {
-    "copy": "cpx \"src/img/*.*\" dist/img/",
+    "copy": "npx cpx2 \"src/img/*.*\" dist/img/",
     "clean": "if exist dist rmdir dist /s /q && mkdir dist && if exist dist rmdir tmp /s /q && mkdir tmp",
     "build:css": "lessc src/css/spotlight.less src/css/spotlight.css",
-    "build:css:bundle": "node task/bundle --image && lessc --autoprefix=\">=1%\" --csswring=\"--sourcemap --preserve-hacks\" --clean-css=\"--s1 --advanced --rebase\" tmp/bundle.less dist/css/spotlight.min.css && csso dist/css/spotlight.min.css --output dist/css/spotlight.min.css",
+    "build:css:bundle": "node task/bundle --image && lessc --clean-css=\"--s1 --advanced\" tmp/bundle.less dist/css/spotlight.min.css && csso dist/css/spotlight.min.css --output dist/css/spotlight.min.css",
     "build:js": "node task/build",
     "build:bundle": "node task/build --bundle",
     "build:svg": "node task/svgo",
     "build": "npm run clean && npm run copy && npm run build:svg && npm run build:css && npm run build:css:bundle && node task/bundle --style && npm run build:js && npm run build:bundle && echo Build Complete. && exit 0",
-    "server": "node task/server.js"
+    "server": "http-server -p 8080"
   },
   "files": [
     "dist/",
@@ -55,16 +55,15 @@
   ],
   "readme": "README.md",
   "devDependencies": {
-    "base64-img": "^1.0.4",
-    "cpx": "^1.5.0",
-    "csso": "^4.2.0",
-    "csso-cli": "^3.0.0",
-    "google-closure-compiler": "^20210406.0.0",
-    "less": "^4.1.1",
-    "less-plugin-autoprefix": "^2.0.0",
+    "cpx2": "^7.0.1",
+    "csso": "^5.0.5",
+    "csso-cli": "^4.0.2",
+    "google-closure-compiler": "^20251111.0.0",
+    "less": "^4.2.2",
+    "postcss": "^8.4.49",
+    "autoprefixer": "^10.4.20",
     "less-plugin-clean-css": "^1.5.1",
-    "less-plugin-csswring": "^0.0.1",
-    "svgo": "^2.3.0",
-    "web-servo": "^0.5.1"
+    "svgo": "^3.3.2",
+    "http-server": "^14.1.1"
   }
 }
