@@ -88,6 +88,7 @@ let options_preload;
 let options_href;
 let options_click;
 let options_class;
+let options_history;
 let delay;
 
 let animation_scale;
@@ -260,7 +261,10 @@ export function addControl(classname, fn){
     const div = /** @type {HTMLDivElement} */ (createElement("div"));
 
     div.className = "spl-" + classname;
-    addListener(div, "click", fn);
+    addListener(div, "click", function(e){
+        cancelEvent(e, true);
+        fn(e);
+    });
     header.appendChild(div);
 
     return controls_dom[classname] = div;
@@ -425,6 +429,7 @@ function apply_options(anchor){
     options_click = options["onclick"];
     options_theme = options["theme"];
     options_class = options["class"];
+    options_history = parse_option("history", true);
     options_autohide = parse_option("autohide", true);
     options_infinite = parse_option("infinite");
     options_progress = parse_option("progress", true);
@@ -1432,8 +1437,10 @@ function show_gallery(){
 
     //console.log("show_gallery");
 
-    history.pushState({ "spl": 1 }, "");
-    history.pushState({ "spl": 2 }, "");
+    if(options_history !== false){
+        history.pushState({ "spl": 1 }, "");
+        history.pushState({ "spl": 2 }, "");
+    }
 
     toggleAnimation(widget, true);
     addClass(body, "hide-scrollbars");
@@ -1458,6 +1465,10 @@ export function download(){
  * @param {boolean=} hashchange
  */
 
+/**
+ * @param {boolean=} hashchange
+ */
+
 export function close(hashchange){
 
     //console.log("close", hashchange);
@@ -1474,9 +1485,9 @@ export function close(hashchange){
     removeClass(widget, "show");
 
     fullscreen(false);
-    toggle_listener();
-
-    history.go(hashchange === true ? -1 : -2);
+    if(options_history !== false){
+        history.go(hashchange === true ? -1 : -2);
+    }
 
     // teardown
 
